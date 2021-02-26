@@ -26,4 +26,4 @@ $(BUILD_DIR)/%.o: %.cc
 
 clean:
 	$(MAKE) -C BuhaoEngine clean
-	rm -rf *.o app
+	rm -rf $(BUILD_DIR)

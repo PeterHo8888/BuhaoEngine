@@ -22,4 +22,4 @@ $(BUILD_DIR)/%.o: %.cc
 
 .PHONY: clean
 clean:
-	rm -rf *.o *.a
+	rm -rf $(BUILD_DIR)
