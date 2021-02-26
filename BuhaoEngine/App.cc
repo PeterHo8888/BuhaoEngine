@@ -103,7 +103,20 @@ void App::process_input()
 
 void App::update()
 {
-    room->update();
+    /*
+     * THIS IS FORBIDDEN BY ISO C++ [-fpermissive]
+     *
+     * Call derived (read: user's) update()
+     * ONLY if it's been overridden.
+     *
+     * Do NOT call if not overriden, or else
+     * Room::update() will be called twice.
+     */
+    if (&room->update != &room->Room::update)
+        room->update();
+
+    // Call base update()
+    room->Room::update();
 }
 
 void App::render(double lag_multiplier)

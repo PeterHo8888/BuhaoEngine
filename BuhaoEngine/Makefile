@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -Wall -Wextra
+CXXFLAGS = -Wall -Wextra -fpermissive
 LDFLAGS = -lSDL2 -lSDL2_image
 
 BUILD_DIR = build

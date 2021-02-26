@@ -19,8 +19,22 @@ void Room::process_input(SDL_Event *)
 
 void Room::update()
 {
-    for (GameObject *game_obj : game_objs)
-        game_obj->update();
+    for (GameObject *game_obj : game_objs) {
+        /*
+         * THIS IS FORBIDDEN BY ISO C++ [-fpermissive]
+         *
+         * Call derived (read: user's) update()
+         * ONLY if it's been overridden.
+         *
+         * Do NOT call if not overriden, or else
+         * GameObject::update() will be called twice.
+         */
+        if (&game_obj->update != &game_obj->GameObject::update)
+            game_obj->update();
+
+        // Call base update() for things like velocity and gravity
+        game_obj->GameObject::update();
+    }
 }
 
 void Room::render() const
