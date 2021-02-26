@@ -9,7 +9,7 @@ private:
     void add_player(int x, int y);
 public:
     Board() {}
-    void update() override;
+    //void update() override;
     void process_input(SDL_Event *) override;
     void init() override;
 };

@@ -8,10 +8,10 @@ Player::Player(Sprite *s)
     set_sprite(s);
 }
 
-void Player::update()
-{
-    // Stub, players don't update after placed onto board
-}
+//void Player::update()
+//{
+//    // Stub, players don't update after placed onto board
+//}
 
 void Player::render() const
 {

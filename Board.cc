@@ -50,8 +50,8 @@ void Board::add_player(int x, int y)
     if (board[cell_y * 3 + cell_x] == 0) {
         p->set_pos(draw_x, draw_y);
         game_objs.push_back(p);
-        turn = !turn;
         board[cell_y * 3 + cell_x] = (turn == 0) ? 'x' : 'o';
+        turn = !turn;
     }
 
     char winners = check_win();
@@ -63,10 +63,10 @@ void Board::add_player(int x, int y)
     }
 }
 
-void Board::update()
-{
-    Room::update();
-}
+//void Board::update()
+//{
+//    // Stub, for now
+//}
 
 void Board::process_input(SDL_Event *e)
 {
