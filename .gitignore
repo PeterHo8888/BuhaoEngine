@@ -1,3 +1,8 @@
 **/*.o
 **/*.a
+**/*.elf
+**/*.nro
+**/*.nacp
+build
+switch-build
 app

@@ -5,6 +5,12 @@ struct SDL_Renderer;
 struct GameObject;
 union SDL_Event;
 
+#ifdef __SWITCH__
+#define yeet (void*)
+#else
+#define yeet throw
+#endif
+
 class Room {
 private:
 public:
@@ -22,7 +28,7 @@ public:
     void add_gameobj(GameObject *obj)
     {
         if (!obj)
-            throw "NullPointerException";
+            yeet "NullPointerException";
         game_objs.push_back(obj);
     }
 public:

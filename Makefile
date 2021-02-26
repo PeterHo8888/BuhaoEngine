@@ -1,22 +1,27 @@
 CXX = g++
 CXXFLAGS = -Wall -Wextra
-LDFLAGS = -LBuhaoEngine -lSDL2 -lSDL2_image -lbuhao
+
+BUILD_DIR = build
+
+LDFLAGS = -LBuhaoEngine/$(BUILD_DIR) -lSDL2 -lSDL2_image -lbuhao
 
 SRCS = $(wildcard *.cc)
-OBJS = $(patsubst %.cc,%.o,$(SRCS))
+OBJS = $(patsubst %.cc,$(BUILD_DIR)/%.o,$(SRCS))
 
 .PHONY: all clean
 all:
 	$(MAKE) -C BuhaoEngine
 	$(MAKE) app
 
-app: $(OBJS) BuhaoEngine/libbuhao.a
+app: $(OBJS) BuhaoEngine/$(BUILD_DIR)/libbuhao.a
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
-%.o: %.cc %.h
+$(BUILD_DIR)/%.o: %.cc %.h
+	mkdir -p $(BUILD_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-%.o: %.cc
+$(BUILD_DIR)/%.o: %.cc
+	mkdir -p $(BUILD_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 clean:

@@ -8,6 +8,12 @@
 #endif
 #include <SDL2/SDL.h>
 
+#ifdef __SWITCH__
+#define yeet (void*)
+#else
+#define yeet throw
+#endif
+
 App::App(const char title[], int width, int height) : MS_PER_UPDATE(16), running(false), room(nullptr)
 {
 #ifdef __SWITCH__
@@ -42,9 +48,9 @@ App::App(const char title[], int width, int height) : MS_PER_UPDATE(16), running
 void App::set_default_room(Room *room)
 {
     if (!renderer)
-        throw "Renderer is not set";
+        yeet "Renderer is not set";
     if (!room)
-        throw "Room is null";
+        yeet "Room is null";
 
     room->set_renderer(renderer);
     room->init();

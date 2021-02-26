@@ -2,16 +2,22 @@ CXX = g++
 CXXFLAGS = -Wall -Wextra
 LDFLAGS = -lSDL2 -lSDL2_image
 
+BUILD_DIR = build
+
 SRCS = $(wildcard *.cc)
-OBJS = $(patsubst %.cc,%.o,$(SRCS))
+OBJS = $(patsubst %.cc,$(BUILD_DIR)/%.o,$(SRCS))
 
-libbuhao.a: $(OBJS)
-	ar rcs $@ $^
+AR = ar
 
-%.o: %.cc %.h
+$(BUILD_DIR)/libbuhao.a: $(OBJS)
+	$(AR) rcs $@ $^
+
+$(BUILD_DIR)/%.o: %.cc %.h
+	mkdir -p $(BUILD_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-%.o: %.cc
+$(BUILD_DIR)/%.o: %.cc
+	mkdir -p $(BUILD_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 .PHONY: clean
