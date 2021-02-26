@@ -1,6 +1,5 @@
 #include "Room.h"
 #include "GameObject.h"
-#include <SDL2/SDL.h>
 
 using namespace std;
 
@@ -24,14 +23,14 @@ void Room::update()
         game_obj->update();
 }
 
-void Room::render(SDL_Renderer *renderer) const
+void Room::render() const
 {
     // TODO: Add layering system
 
     // background->render();
 
     for (const GameObject *game_obj : game_objs)
-        game_obj->render(renderer);
+        game_obj->render();
 
     // hud->render();
 }

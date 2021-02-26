@@ -29,8 +29,8 @@ Board::Board()
 
 void Board::init()
 {
-    texture_o = new Texture(renderer, "tic-tac-toe/images/o.png");
-    texture_x = new Texture(renderer, "tic-tac-toe/images/x.png");
+    texture_o = new Texture("tic-tac-toe/images/o.png");
+    texture_x = new Texture("tic-tac-toe/images/x.png");
 }
 
 void Board::add_player(int x, int y)

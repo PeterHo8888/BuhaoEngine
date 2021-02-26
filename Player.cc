@@ -7,11 +7,6 @@ Player::Player(Texture *texture)
     init(texture);
 }
 
-Player::Player(SDL_Renderer *renderer, const char filename[])
-{
-    init(new Texture(renderer, filename));
-}
-
 void Player::init(Texture *texture)
 {
     this->texture = texture;
@@ -32,7 +27,7 @@ void Player::update()
     // Stub, players don't update after placed onto board
 }
 
-void Player::render(SDL_Renderer *) const
+void Player::render() const
 {
     texture->blit(draw_x, draw_y);
 }
@@ -41,7 +36,6 @@ int Player::get_width()
 {
     return texture->get_width();
 }
-
 int Player::get_height()
 {
     return texture->get_height();

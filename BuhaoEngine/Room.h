@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-struct SDL_Renderer;
 struct GameObject;
 union SDL_Event;
 
@@ -15,15 +14,9 @@ class Room {
 private:
 public:
     std::vector<GameObject*> game_objs;
-    SDL_Renderer *renderer;
 public:
     Room();
-    void render(SDL_Renderer *) const;
-
-    void set_renderer(SDL_Renderer *renderer)
-    {
-        this->renderer = renderer;
-    }
+    void render() const;
 
     void add_gameobj(GameObject *obj)
     {

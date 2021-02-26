@@ -1,4 +1,5 @@
 #include "Texture.h"
+#include "App.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
@@ -7,8 +8,9 @@
 #include <iostream>
 using namespace std;
 
-Texture::Texture(SDL_Renderer *renderer, const char filename[]) : renderer(renderer)
+Texture::Texture(const char filename[])
 {
+    SDL_Renderer *renderer = App::get_renderer();
     texture = IMG_LoadTexture(renderer, filename);
     SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
     cout << "Initialized texture " << filename << " " << rect.w << " " << rect.h << endl;
@@ -16,6 +18,7 @@ Texture::Texture(SDL_Renderer *renderer, const char filename[]) : renderer(rende
 
 void Texture::blit(int x, int y)
 {
+    SDL_Renderer *renderer = App::get_renderer();
     rect.x = x;
     rect.y = y;
     SDL_RenderCopy(renderer, texture, NULL, &rect);

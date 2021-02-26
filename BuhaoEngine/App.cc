@@ -14,6 +14,9 @@
 #define yeet throw
 #endif
 
+SDL_Renderer *App::renderer = nullptr;
+SDL_Window *App::window = nullptr;
+
 App::App(const char title[], int width, int height) : MS_PER_UPDATE(16), running(false), room(nullptr)
 {
 #ifdef __SWITCH__
@@ -52,7 +55,6 @@ void App::set_default_room(Room *room)
     if (!room)
         yeet "Room is null";
 
-    room->set_renderer(renderer);
     room->init();
     this->room = room;
 }
@@ -108,6 +110,6 @@ void App::render(double lag_multiplier)
 {
     SDL_SetRenderDrawColor(renderer, 96, 128, 255, 255);
     SDL_RenderClear(renderer);
-    room->render(renderer);
+    room->render();
     SDL_RenderPresent(renderer);
 }
