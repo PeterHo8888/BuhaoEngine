@@ -16,4 +16,4 @@ libbuhao.a: $(OBJS)
 
 .PHONY: clean
 clean:
-	rm -rf *.o
+	rm -rf *.o *.a

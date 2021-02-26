@@ -4,11 +4,11 @@
 
 union SDL_Event;
 
-class TTTRoom : public Room {
+class Board : public Room {
 private:
     void add_player(int x, int y);
 public:
-    TTTRoom();
+    Board();
     void update() override;
     void process_input(SDL_Event *) override;
     void init() override;

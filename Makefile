@@ -5,8 +5,12 @@ LDFLAGS = -LBuhaoEngine -lSDL2 -lSDL2_image -lbuhao
 SRCS = $(wildcard *.cc)
 OBJS = $(patsubst %.cc,%.o,$(SRCS))
 
-app: $(OBJS)
+.PHONY: all clean
+all:
 	$(MAKE) -C BuhaoEngine
+	$(MAKE) app
+
+app: $(OBJS) BuhaoEngine/libbuhao.a
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
 %.o: %.cc %.h
@@ -15,6 +19,6 @@ app: $(OBJS)
 %.o: %.cc
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-.PHONY: clean
 clean:
+	$(MAKE) -C BuhaoEngine clean
 	rm -rf *.o app

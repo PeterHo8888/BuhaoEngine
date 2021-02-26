@@ -9,17 +9,17 @@ using namespace std;
 static Texture *texture_o;
 static Texture *texture_x;
 
-TTTRoom::TTTRoom()
+Board::Board()
 {
 }
 
-void TTTRoom::init()
+void Board::init()
 {
     texture_o = new Texture(renderer, "/home/pho/Desktop/c.png");
     texture_x = new Texture(renderer, "/home/pho/Desktop/p.png");
 }
 
-void TTTRoom::add_player(int x, int y)
+void Board::add_player(int x, int y)
 {
     static int turn = 0;
 
@@ -37,12 +37,12 @@ void TTTRoom::add_player(int x, int y)
     turn = !turn;
 }
 
-void TTTRoom::update()
+void Board::update()
 {
     Room::update();
 }
 
-void TTTRoom::process_input(SDL_Event *e)
+void Board::process_input(SDL_Event *e)
 {
     switch (e->type) {
     case SDL_MOUSEBUTTONUP:
