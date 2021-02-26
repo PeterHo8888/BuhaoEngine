@@ -1,13 +1,13 @@
 #include "Board.h"
 #include "Player.h"
-#include "BuhaoEngine/Texture.h"
+#include "BuhaoEngine/Sprite.h"
 #include <SDL2/SDL.h>
 
 #include <iostream>
 using namespace std;
 
-static Texture *texture_o;
-static Texture *texture_x;
+static Sprite *sprite_o;
+static Sprite *sprite_x;
 
 static char board[9];
 
@@ -29,8 +29,8 @@ Board::Board()
 
 void Board::init()
 {
-    texture_o = new Texture("tic-tac-toe/images/o.png");
-    texture_x = new Texture("tic-tac-toe/images/x.png");
+    sprite_o = new Sprite("tic-tac-toe/images/o.png");
+    sprite_x = new Sprite("tic-tac-toe/images/x.png");
 }
 
 void Board::add_player(int x, int y)
@@ -39,15 +39,20 @@ void Board::add_player(int x, int y)
 
     Player *p;
     if (turn == 0)
-        p = new Player(texture_x);
+        p = new Player(sprite_x);
     else
-        p = new Player(texture_o);
+        p = new Player(sprite_o);
 
-    int cell_x = x / p->get_width();
-    int cell_y = y / p->get_height();
+    int sprite_width = sprite_o->get_width();
+    int sprite_height = sprite_o->get_height();
+
+    int cell_x = x / sprite_width;
+    int cell_y = y / sprite_height;
+    int draw_x = cell_x * sprite_width;
+    int draw_y = cell_y * sprite_height;
 
     if (board[cell_y * 3 + cell_x] == 0) {
-        p->set_pos(cell_x, cell_y);
+        p->set_pos(draw_x, draw_y);
         game_objs.push_back(p);
         turn = !turn;
         board[cell_y * 3 + cell_x] = (turn == 0) ? 'x' : 'o';
