@@ -70,10 +70,12 @@ void Board::update()
 void Board::process_input(SDL_Event *e)
 {
     switch (e->type) {
+    case SDL_FINGERUP:
+        add_player(e->tfinger.x * 600, e->tfinger.y * 600);
+        break;
     case SDL_MOUSEBUTTONUP:
-        if (e->button.button == SDL_BUTTON_LEFT) {
+        if (e->button.button == SDL_BUTTON_LEFT)
             add_player(e->button.x, e->button.y);
-        }
         break;
     default:
         break;
