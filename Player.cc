@@ -2,8 +2,10 @@
 #include "BuhaoEngine/Sprite.h"
 #include <SDL2/SDL.h>
 
-Player::Player(Sprite *s) : GameObject(0, 0, 0, 0.0, true, s)
+Player::Player(Sprite *s)
 {
+    set_visible(true);
+    set_sprite(s);
 }
 
 void Player::update()

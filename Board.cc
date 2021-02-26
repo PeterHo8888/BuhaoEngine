@@ -23,10 +23,6 @@ static char check_win()
         ((board[2] && board[2] == board[4] && board[4] == board[6]) << 7);
 }
 
-Board::Board()
-{
-}
-
 void Board::init()
 {
     sprite_o = new Sprite("tic-tac-toe/images/o.png");

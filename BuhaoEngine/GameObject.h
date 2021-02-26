@@ -6,7 +6,7 @@ struct Sprite;
  */
 class GameObject {
 protected:
-    double x, y, z;
+    int x, y, z;
     double gravity;
     bool visible;
     Sprite *sprite;
@@ -16,7 +16,7 @@ public:
     virtual void render() const = 0;
 
 protected:
-    GameObject(double x = 0.0, double y = 0.0, double z = 0.0,
+    GameObject(int x = 0.0, int y = 0.0, int z = 0.0,
             double g = 0.0, bool v = false, Sprite *s = nullptr) :
         x(x), y(y), z(z), gravity(g), visible(v), sprite(s)
     {}
@@ -29,8 +29,16 @@ public:
         set_x(x);
         set_y(y);
     }
-    void set_gravity(double g) { g = g; }
+    void set_gravity(double g) { this->gravity = g; }
     void set_z(double z) { this->z = z; }
     void set_visible(bool v) { this->visible = v; }
     void set_sprite(Sprite *s) { this->sprite = s; }
+public:
+    // Accessors
+    int get_x() const { return x; }
+    int get_y() const { return y; }
+    int get_z() const { return z; }
+    double get_gravity() const { return gravity; }
+    bool is_visible() const { return visible; }
+    Sprite *get_sprite() const { return sprite; }
 };

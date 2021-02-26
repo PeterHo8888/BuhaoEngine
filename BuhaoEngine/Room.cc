@@ -30,7 +30,8 @@ void Room::render() const
     // background->render();
 
     for (const GameObject *game_obj : game_objs)
-        game_obj->render();
+        if (game_obj->is_visible())
+            game_obj->render();
 
     // hud->render();
 }
