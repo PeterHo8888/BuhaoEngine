@@ -2,10 +2,20 @@
 #include "Room.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#ifdef __SWITCH__
+#include <switch.h>
+#endif
 #include <SDL2/SDL.h>
 
 App::App(const char title[], int width, int height) : MS_PER_UPDATE(16), running(false), room(nullptr)
 {
+#ifdef __SWITCH__
+    romfsInit();
+    chdir("romfs:/");
+#else
+    chdir("romfs/");
+#endif
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         printf("Error initializing SDL: %s\n", SDL_GetError());
         exit(1);
