@@ -12,7 +12,7 @@ TARGET = ../apps/tic-tac-toe
 
 .PHONY: all clean
 all:
-	$(MAKE) ../apps/tic-tac-toe
+	$(MAKE) $(TARGET)
 
 $(TARGET): $(OBJS) ../BuhaoEngine/$(BUILD_DIR)/libbuhao.a
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)

@@ -20,16 +20,50 @@ static Sound *sound_win;
 static Sound *sound_lose;
 static Sound *sound_draw;
 
-static char check_win()
+static pair<char, char> results;
+static bool is_draw;
+
+inline static bool check_draw()
 {
-    return ((board[0] && board[0] == board[1] && board[1] == board[2])) |
-        ((board[3] && board[3] == board[4] && board[4] == board[5]) << 1) |
-        ((board[6] && board[6] == board[7] && board[7] == board[8]) << 2) |
-        ((board[0] && board[0] == board[3] && board[3] == board[6]) << 3) |
-        ((board[1] && board[1] == board[4] && board[4] == board[7]) << 4) |
-        ((board[2] && board[2] == board[5] && board[5] == board[8]) << 5) |
-        ((board[0] && board[0] == board[4] && board[4] == board[8]) << 6) |
-        ((board[2] && board[2] == board[4] && board[4] == board[6]) << 7);
+    for (int i = 0; i < 9; ++i)
+        if (!board[i])
+            return false;
+    return true;
+}
+
+static pair<char, char> check_win()
+{
+    char winner = '\0';
+    char paths = 0;
+
+    // check horizontals
+    for (int y = 0; y < 3; ++y) {
+        if (board[y * 3] && board[y * 3] == board[y * 3 + 1] && board[y * 3] == board[y * 3 + 2]) {
+            winner = board[y * 3];
+            paths |= 1 << y;
+        }
+    }
+
+    // check verticals
+    for (int x = 0; x < 3; ++x) {
+        if (board[x] && board[x] == board[3 + x] && board[x] == board[6 + x]) {
+            winner = board[x];
+            paths |= 1 << (x + 3);
+        }
+    }
+
+    // check diagonals
+    if (board[0] && board[0] == board[4] && board[4] == board[8]) {
+        winner = board[0];
+        paths |= 1 << 6;
+    }
+
+    if (board[2] && board[2] == board[4] && board[4] == board[6]) {
+        winner = board[2];
+        paths |= 1 << 7;
+    }
+
+    return pair<char, char>(winner, paths);
 }
 
 void Board::init()
@@ -44,6 +78,8 @@ void Board::init()
     sound_draw = new Sound("tic-tac-toe/audio/C_Tritone_trimmed.wav");
 
     game_over = false;
+    is_draw = false;
+    results = pair<char, char>(0, 0);
 }
 
 void Board::add_player(int x, int y)
@@ -83,21 +119,27 @@ void Board::add_player(int x, int y)
         turn = !turn;
     }
 
-    char winners = check_win();
-    for (int i = 0; i < 8; ++i) {
-        if (winners & (1 << i)) {
-            game_over = true;
-            break;
-        }
-    }
+    results = check_win();
+    is_draw = check_draw() &~ results.second;
+    if (results.second || is_draw)
+        game_over = true;
 }
 
 void Board::update()
 {
     if (game_over) {
-        printf("Winner\n");
-        fflush(stdout);
-        sound_win->play();
+        if (is_draw) {
+            printf("Draw\n");
+            fflush(stdout);
+            sound_draw->play();
+        } else {
+            printf("Winner is %c\n", results.first);
+            fflush(stdout);
+            if (results.first == 'x')
+                sound_win->play();
+            else
+                sound_lose->play();
+        }
         game_over = false;
         reset_on_click = true;
     }
