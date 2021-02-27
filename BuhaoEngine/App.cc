@@ -112,7 +112,7 @@ void App::update()
      * Do NOT call if not overriden, or else
      * Room::update() will be called twice.
      */
-    if (&room->update != &room->Room::update)
+    //if (&room->update != &room->Room::update)
         room->update();
 
     // Call base update()

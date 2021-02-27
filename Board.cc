@@ -1,6 +1,7 @@
 #include "Board.h"
 #include "Player.h"
 #include "BuhaoEngine/Sprite.h"
+#include "BuhaoEngine/Sound.h"
 #include <SDL2/SDL.h>
 
 #include <iostream>
@@ -10,6 +11,14 @@ static Sprite *sprite_o;
 static Sprite *sprite_x;
 
 static char board[9];
+static bool game_over;
+static bool reset_on_click;
+
+static Sound *sound_x;
+static Sound *sound_o;
+static Sound *sound_win;
+static Sound *sound_lose;
+static Sound *sound_draw;
 
 static char check_win()
 {
@@ -25,13 +34,29 @@ static char check_win()
 
 void Board::init()
 {
-    sprite_o = new Sprite("tic-tac-toe/images/o.png");
     sprite_x = new Sprite("tic-tac-toe/images/x.png");
+    sprite_o = new Sprite("tic-tac-toe/images/o.png");
+
+    sound_x = new Sound("tic-tac-toe/audio/c.wav");
+    sound_o = new Sound("tic-tac-toe/audio/e.wav");
+    sound_win = new Sound("tic-tac-toe/audio/arp.wav");
+    sound_lose = new Sound("tic-tac-toe/audio/C_Reverse_Trim.wav");
+    sound_draw = new Sound("tic-tac-toe/audio/C_Tritone_trimmed.wav");
+
+    game_over = false;
 }
 
 void Board::add_player(int x, int y)
 {
     static int turn = 0;
+
+    if (reset_on_click) {
+        memset(board, 0, sizeof(board));
+        game_objs.clear();
+        turn = 0;
+        reset_on_click = false;
+        return;
+    }
 
     Player *p;
     if (turn == 0)
@@ -51,22 +76,32 @@ void Board::add_player(int x, int y)
         p->set_pos(draw_x, draw_y);
         game_objs.push_back(p);
         board[cell_y * 3 + cell_x] = (turn == 0) ? 'x' : 'o';
+        if (turn == 0)
+            sound_x->play();
+        else
+            sound_o->play();
         turn = !turn;
     }
 
     char winners = check_win();
     for (int i = 0; i < 8; ++i) {
         if (winners & (1 << i)) {
-            printf("Winner\n");
-            fflush(stdout);
+            game_over = true;
+            break;
         }
     }
 }
 
-//void Board::update()
-//{
-//    // Stub, for now
-//}
+void Board::update()
+{
+    if (game_over) {
+        printf("Winner\n");
+        fflush(stdout);
+        sound_win->play();
+        game_over = false;
+        reset_on_click = true;
+    }
+}
 
 void Board::process_input(SDL_Event *e)
 {
