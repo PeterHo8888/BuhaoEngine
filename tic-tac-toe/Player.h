@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BuhaoEngine/GameObject.h"
+#include <BuhaoEngine/GameObject.h>
 
 class Sprite;
 

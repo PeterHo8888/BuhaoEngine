@@ -1,7 +1,7 @@
 #include "Board.h"
 #include "Player.h"
-#include "BuhaoEngine/Sprite.h"
-#include "BuhaoEngine/Sound.h"
+#include <BuhaoEngine/Sprite.h>
+#include <BuhaoEngine/Sound.h>
 #include <SDL2/SDL.h>
 
 #include <iostream>

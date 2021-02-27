@@ -3,6 +3,7 @@
 **/*.elf
 **/*.nro
 **/*.nacp
+.vscode
 build
 switch-build
-app
+apps
