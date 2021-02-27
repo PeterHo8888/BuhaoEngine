@@ -14,6 +14,7 @@ protected:
 public:
     /* Optional impls */
     virtual void update();
+    // TODO: Create event stubs
 public:
     /* Engine req'd impls */
     virtual void render() const = 0;

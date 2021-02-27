@@ -1,12 +1,17 @@
 #include "Sprite.h"
 #include <SDL2/SDL.h>
 
-Sprite::Sprite(const char filename[])
+Sprite::Sprite(const char filename[]) : framerate(0.0), cur_frame(0)
 {
-    t = new Texture(filename);
+    add_frame(filename);
+}
+
+void Sprite::add_frame(const char filename[])
+{
+    t.push_back(new Texture(filename));
 }
 
 void Sprite::render(int x, int y)
 {
-    t->blit(x, y);
+    t[cur_frame]->blit(x, y);
 }
