@@ -7,6 +7,6 @@ class Sprite;
 class Player : public GameObject {
 public:
     Player(Sprite *);
-    //void update() override;
+    void update() override;
     void render() const override;
 };
