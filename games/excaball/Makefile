@@ -3,7 +3,7 @@ CXXFLAGS = -Wall -Wextra -I../../
 
 BUILD_DIR = build
 
-LDFLAGS = -L../../BuhaoEngine/$(BUILD_DIR) -lSDL2 -lSDL2_image -lSDL2_mixer -lbuhao
+LDFLAGS = -L../../BuhaoEngine/$(BUILD_DIR) -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_gfx -lbuhao
 
 SRCS = $(wildcard *.cc)
 OBJS = $(patsubst %.cc,$(BUILD_DIR)/%.o,$(SRCS))

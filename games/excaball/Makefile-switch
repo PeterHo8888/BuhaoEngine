@@ -44,20 +44,22 @@ include $(DEVKITPRO)/libnx/switch_rules
 #INCLUDES	:=	include
 #ROMFS	:=	romfs
 
-BASE		:=	$(shell pwd)/..
-TARGET		:=	Tic-Tac-Toe
-BUILD		:=	switch-build
+BASE		:=	./../..
+TARGET		:=	$(BASE)/apps-switch/excaball
+BUILD		:=	build-switch
 SOURCES		:=	.
 DATA		:=	data
-INCLUDES	:=	.
-ROMFS	:=	romfs
+INCLUDES	:=	. $(BASE)
+ROMFS	:=	$(BASE)/romfs
 
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
 ARCH	:=	-march=armv8-a+crc+crypto -mtune=cortex-a57 -mtp=soft -fPIE
 
-CFLAGS	:=	`$(PREFIX)pkg-config --cflags sdl2 SDL2_mixer SDL2_image` -g -Wall -O2 -ffunction-sections \
+SDLLIBS := sdl2 SDL2_mixer SDL2_image SDL2_gfx
+
+CFLAGS	:=	`$(PREFIX)pkg-config --cflags $(SDLLIBS)` -g -Wall -O2 -ffunction-sections \
 			$(ARCH) $(DEFINES)
 
 #CFLAGS	+=	-D__SWITCH__ $(INCLUDE) `sdl2-config --cflags`
@@ -68,8 +70,7 @@ CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
-LIBS	:=	-L"$(BASE)/BuhaoEngine/$(BUILD)" -lbuhao `$(PREFIX)pkg-config --libs sdl2 SDL2_mixer SDL2_image` -lnx
-#LIBS	:=	-L/home/pho/git/BuhaoEngine/BuhaoEngine/switch-build -lbuhao `$(PREFIX)pkg-config --libs sdl2 SDL2_mixer SDL2_image` -lnx
+LIBS	:=	-L"$(BASE)/../BuhaoEngine/$(BUILD)" -lbuhao `$(PREFIX)pkg-config --libs $(SDLLIBS)` -lnx
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
@@ -165,14 +166,19 @@ ifneq ($(ROMFS),)
 	export NROFLAGS += --romfsdir=$(CURDIR)/$(ROMFS)
 endif
 
-.PHONY: $(BUILD) clean all
+.PHONY: $(BUILD) clean all libbuhao
 
 #---------------------------------------------------------------------------------
-all: $(BUILD)
+all: libbuhao $(BUILD)
+
+libbuhao:
+	$(MAKE) -C ../../BuhaoEngine -f Makefile-switch
+	@# Need this here because I don't want to modify libnx/switch_rules
+	@[ -d $(TARGET) ] || mkdir -p $(TARGET)
 
 $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
-	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/switch-Makefile
+	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile-switch
 
 #---------------------------------------------------------------------------------
 clean:

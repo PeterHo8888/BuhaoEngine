@@ -1,6 +1,5 @@
 CXX = g++
 CXXFLAGS = -Wall -Wextra -fpermissive
-LDFLAGS = -lSDL2 -lSDL2_image
 
 BUILD_DIR = build
 
@@ -13,11 +12,11 @@ $(BUILD_DIR)/libbuhao.a: $(OBJS)
 	$(AR) rcs $@ $^
 
 $(BUILD_DIR)/%.o: %.cc %.h
-	mkdir -p $(shell dirname $@)
+	@mkdir -p $(shell dirname $@)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 $(BUILD_DIR)/%.o: %.cc
-	mkdir -p $(shell dirname $@)
+	@mkdir -p $(shell dirname $@)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 .PHONY: clean

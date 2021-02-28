@@ -1,22 +1,31 @@
 BUILD_DIR = apps
 GAMES_DIR = games
-GAMES = tic-tac-toe excaball
-#TARGETS = $(patsubst %,$(BUILD_DIR)/%,$(GAMES))
+GAMES = $(wildcard $(GAMES_DIR)/*)
 
-.PHONY: all clean BuhaoEngine/build/libbuhao.a $(GAMES)
+.PHONY: all clean
+.PHONY: switch
+.PHONY: $(GAMES)
 
-all: BuhaoEngine/build/libbuhao.a $(GAMES)
+all:
+	@TARGET_MK=Makefile $(MAKE) $(GAMES)
 
-BuhaoEngine/build/libbuhao.a:
-	$(MAKE) -C BuhaoEngine
+switch:
+	@TARGET_MK=Makefile-switch $(MAKE) $(GAMES)
 
 $(GAMES):
-	mkdir -p $(BUILD_DIR)
-	$(MAKE) -C $(GAMES_DIR)/$@
+	@mkdir -p $(BUILD_DIR)
+	@$(MAKE) -C $@ -f $(TARGET_MK)
+
+switch-%:
+	@TARGET_MK=Makefile-switch $(MAKE) _$*
+	rm -rf $(BUILD_DIR)-switch
 
 clean:
-	$(MAKE) -C BuhaoEngine clean
-	for f in $(GAMES); do \
-		$(MAKE) -C $(GAMES_DIR)/$$f clean; \
-	done
+	@TARGET_MK=Makefile $(MAKE) _clean
 	rm -rf $(BUILD_DIR)
+
+_clean:
+	$(MAKE) -C BuhaoEngine clean -f $(TARGET_MK)
+	for f in $(GAMES); do \
+		$(MAKE) -C $$f -f $(TARGET_MK) clean; \
+	done
