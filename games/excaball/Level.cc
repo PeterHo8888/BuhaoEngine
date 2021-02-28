@@ -9,12 +9,13 @@
 #include <string>
 using namespace std;
 
-Level::Level() : current_world(0), current_level(0), level_buffer(new char[LEVEL_SIZE])
+Level::Level() : current_world(0), current_level(0), level_buffer(new char[LEVEL_SIZE]), bgm(nullptr)
 {}
 
 Level::~Level()
 {
     delete[] level_buffer;
+    delete[] bgm;
 }
 
 void Level::init()
