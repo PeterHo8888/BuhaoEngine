@@ -1,4 +1,5 @@
 BUILD_DIR = apps
+GAMES_DIR = games
 GAMES = tic-tac-toe excaball
 #TARGETS = $(patsubst %,$(BUILD_DIR)/%,$(GAMES))
 
@@ -11,11 +12,11 @@ BuhaoEngine/build/libbuhao.a:
 
 $(GAMES):
 	mkdir -p $(BUILD_DIR)
-	$(MAKE) -C $@
+	$(MAKE) -C $(GAMES_DIR)/$@
 
 clean:
 	$(MAKE) -C BuhaoEngine clean
 	for f in $(GAMES); do \
-		$(MAKE) -C $$f clean; \
+		$(MAKE) -C $(GAMES_DIR)/$$f clean; \
 	done
 	rm -rf $(BUILD_DIR)
