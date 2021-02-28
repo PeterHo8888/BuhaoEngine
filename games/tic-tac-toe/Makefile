@@ -10,12 +10,15 @@ OBJS = $(patsubst %.cc,$(BUILD_DIR)/%.o,$(SRCS))
 
 TARGET = ../../apps/tic-tac-toe
 
-.PHONY: all clean
-all:
+.PHONY: all libbuhao clean
+all: libbuhao
 	$(MAKE) $(TARGET)
 
 $(TARGET): $(OBJS) ../../BuhaoEngine/$(BUILD_DIR)/libbuhao.a
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+
+libbuhao:
+	$(MAKE) -C ../../BuhaoEngine
 
 $(BUILD_DIR)/%.o: %.cc %.h
 	mkdir -p $(BUILD_DIR)
