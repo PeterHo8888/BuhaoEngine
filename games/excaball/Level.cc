@@ -1,4 +1,6 @@
 #include "Level.h"
+#include "Block.h"
+#include <BuhaoEngine/Sound.h>
 #include <SDL2/SDL.h>
 
 #include <iostream>
@@ -7,7 +9,7 @@
 #include <string>
 using namespace std;
 
-Level::Level() : current_world(0), current_level(0), level_buffer(new char[220])
+Level::Level() : current_world(0), current_level(0), level_buffer(new char[LEVEL_SIZE])
 {}
 
 Level::~Level()
@@ -24,25 +26,34 @@ void Level::reload_room()
 {
     game_objs.clear();
     cout << "World " << current_world << " Level " << current_level << '\n';
-    for (size_t i = 0; i < 220; ++i) {
+    for (size_t i = 0; i < LEVEL_SIZE; ++i) {
         if (i && i % 20 == 0)
             cout << '\n';
         cout << level_buffer[i] << " ";
 
-        switch (level_buffer[i]) {
-        case STANDARD:
+        GameObject *obj;
+        switch (level_buffer[i] - '0') {
+        case BlockType::BLOCK:
+            obj = new Block;
+            obj->set_pos(((1280 / 20) * i) % 1280, i / 20 * 64);
+            game_objs.push_back(obj);
             break;
-        case COIN:
+        case BlockType::COIN:
             break;
-        case GEM:
+        case BlockType::GEM:
             break;
-        case BUTTON:
+        case BlockType::BUTTON:
             break;
         default:
             break;
         }
     }
     cout << endl;
+
+    if (bgm)
+        delete[] bgm;
+    bgm = new Sound("excaball/audio/Sound_Intro.ogg", SoundType::MUSIC);
+    bgm->play();
 }
 
 void Level::load_level(int world, int level)
@@ -57,7 +68,7 @@ void Level::load_level(int world, int level)
     ifstream file(path.str());
 
     char block;
-    for (size_t i = 0; i < 220 && file >> block; ++i)
+    for (size_t i = 0; i < LEVEL_SIZE && file >> block; ++i)
         level_buffer[i] = block;
 
     file.close();

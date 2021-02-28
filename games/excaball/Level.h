@@ -3,12 +3,14 @@
 #include <BuhaoEngine/Room.h>
 
 union SDL_Event;
+struct Sound;
 
 enum BlockType {
-    STANDARD = 0,
-    COIN = 1,
-    GEM = 2,
-    BUTTON = 3,
+    BLANK = 0,
+    BLOCK = 1,
+    COIN = 2,
+    GEM = 3,
+    BUTTON = 4,
 };
 
 class Level : public Room {
@@ -16,6 +18,10 @@ private:
     int current_world;
     int current_level;
     char *level_buffer;
+
+    Sound *bgm;
+
+    static constexpr int LEVEL_SIZE = 20 * 12;
 private:
     void reload_room();
     void load_level(int world, int level);
