@@ -120,7 +120,7 @@ void Board::add_player(int x, int y)
     }
 
     results = check_win();
-    is_draw = check_draw() &~ results.second;
+    is_draw = check_draw() && !results.second;
     if (results.second || is_draw)
         game_over = true;
 }
@@ -129,12 +129,10 @@ void Board::update()
 {
     if (game_over) {
         if (is_draw) {
-            printf("Draw\n");
-            fflush(stdout);
+            cout << "Draw" << endl;
             sound_draw->play();
         } else {
-            printf("Winner is %c\n", results.first);
-            fflush(stdout);
+            cout << "Winner is " << results.first << endl;
             if (results.first == 'x')
                 sound_win->play();
             else

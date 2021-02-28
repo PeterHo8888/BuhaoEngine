@@ -27,12 +27,8 @@ void Level::reload_room()
     game_objs.clear();
     cout << "World " << current_world << " Level " << current_level << '\n';
     for (size_t i = 0; i < LEVEL_SIZE; ++i) {
-        if (i && i % 20 == 0)
-            cout << '\n';
-        cout << level_buffer[i] << " ";
-
         GameObject *obj;
-        switch (level_buffer[i] - '0') {
+        switch (level_buffer[i]) {
         case BlockType::BLOCK:
             obj = new Block;
             obj->set_pos(((1280 / 20) * i) % 1280, i / 20 * 64);
@@ -69,7 +65,7 @@ void Level::load_level(int world, int level)
 
     char block;
     for (size_t i = 0; i < LEVEL_SIZE && file >> block; ++i)
-        level_buffer[i] = block;
+        level_buffer[i] = block - '0';
 
     file.close();
 
