@@ -2,6 +2,7 @@
 #include "Player.h"
 #include <BuhaoEngine/Sprite.h>
 #include <BuhaoEngine/Sound.h>
+#include <BuhaoEngine/Shapes/Line.h>
 #include <SDL2/SDL.h>
 
 #include <iostream>
@@ -22,6 +23,8 @@ static Sound *sound_draw;
 
 static pair<char, char> results;
 static bool is_draw;
+
+static Line *win_lines[8];
 
 inline static bool check_draw()
 {
@@ -76,6 +79,15 @@ void Board::init()
     sound_win = new Sound("tic-tac-toe/audio/arp.wav");
     sound_lose = new Sound("tic-tac-toe/audio/C_Reverse_Trim.wav");
     sound_draw = new Sound("tic-tac-toe/audio/C_Tritone_trimmed.wav");
+
+    for (int y = 0; y < 3; ++y)
+        win_lines[y] = new Line(100, y * 200 + 100, 500, y * 200 + 100, 5);
+    for (int x = 0; x < 3; ++x)
+        win_lines[x + 3] = new Line(x * 200 + 100, 100, x * 200 + 100, 500, 5);
+    win_lines[6] = new Line(100, 100, 500, 500, 5);
+    win_lines[7] = new Line(500, 100, 100, 500, 5);
+    for (int i = 0; i < 8; ++i)
+        win_lines[i]->set_color(100, 200, 0);
 
     game_over = false;
     is_draw = false;
@@ -137,6 +149,9 @@ void Board::update()
                 sound_win->play();
             else
                 sound_lose->play();
+            for (int i = 0; i < 8; ++i)
+                if (results.second & (1 << i))
+                    game_objs.push_back(win_lines[i]);
         }
         game_over = false;
         reset_on_click = true;
