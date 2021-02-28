@@ -10,7 +10,7 @@ Sprite *Block::sprite = nullptr;
 Block::Block()
 {
     if (!sprite)
-        sprite = new Sprite("excaball/images/wall_block64.png");
+        sprite = new Sprite("excaball/images/wall_block48.png");
     set_visible(true);
     set_sprite(sprite);
 }

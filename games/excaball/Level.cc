@@ -9,7 +9,7 @@
 #include <string>
 using namespace std;
 
-Level::Level() : current_world(0), current_level(0), level_buffer(new char[LEVEL_SIZE]), bgm(nullptr)
+Level::Level() : current_world(0), current_level(0), level_buffer(new char[Level::SIZE]), bgm(nullptr)
 {}
 
 Level::~Level()
@@ -27,12 +27,12 @@ void Level::reload_room()
 {
     game_objs.clear();
     cout << "World " << current_world << " Level " << current_level << '\n';
-    for (size_t i = 0; i < LEVEL_SIZE; ++i) {
+    for (size_t i = 0; i < Level::SIZE; ++i) {
         GameObject *obj;
         switch (level_buffer[i]) {
         case BlockType::BLOCK:
             obj = new Block;
-            obj->set_pos(((1280 / 20) * i) % 1280, i / 20 * 64);
+            obj->set_pos((Block::WIDTH * i) % (Block::WIDTH * Level::WIDTH), i / Level::WIDTH * Block::WIDTH);
             game_objs.push_back(obj);
             break;
         case BlockType::COIN:
@@ -65,7 +65,7 @@ void Level::load_level(int world, int level)
     ifstream file(path.str());
 
     char block;
-    for (size_t i = 0; i < LEVEL_SIZE && file >> block; ++i)
+    for (size_t i = 0; i < Level::SIZE && file >> block; ++i)
         level_buffer[i] = block - '0';
 
     file.close();

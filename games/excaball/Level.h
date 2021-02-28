@@ -21,7 +21,9 @@ private:
 
     Sound *bgm;
 
-    static constexpr int LEVEL_SIZE = 20 * 12;
+    static constexpr int WIDTH = 26;
+    static constexpr int HEIGHT = 15;
+    static constexpr int SIZE = WIDTH * HEIGHT;
 private:
     void reload_room();
     void load_level(int world, int level);
