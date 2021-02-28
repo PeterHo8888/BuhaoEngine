@@ -112,7 +112,7 @@ void App::update()
      * Do NOT call if not overriden, or else
      * Room::update() will be called twice.
      */
-    //if (&room->update != &room->Room::update)
+    if ((void *)(room->*(&Room::update)) != (void *)&Room::update)
         room->update();
 
     // Call base update()
@@ -121,7 +121,7 @@ void App::update()
 
 void App::render(double lag_multiplier)
 {
-    SDL_SetRenderDrawColor(renderer, 96, 128, 255, 255);
+    SDL_SetRenderDrawColor(renderer, 150, 150, 150, 255);
     SDL_RenderClear(renderer);
     room->render();
     SDL_RenderPresent(renderer);
