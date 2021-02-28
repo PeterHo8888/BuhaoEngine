@@ -1,5 +1,5 @@
 BUILD_DIR = apps
-GAMES = tic-tac-toe
+GAMES = tic-tac-toe excaball
 #TARGETS = $(patsubst %,$(BUILD_DIR)/%,$(GAMES))
 
 .PHONY: all clean BuhaoEngine/build/libbuhao.a $(GAMES)
