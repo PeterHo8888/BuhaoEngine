@@ -11,6 +11,12 @@ void Draw::draw_line(int x1, int y1, int x2, int y2, int t, int r, int g, int b,
     //SDL_RenderDrawLine(renderer, x1, y1, x2, y2);
 }
 
+void Draw::draw_rounded_rect(int x1, int y1, int x2, int y2, int rad, int r, int g, int b, int a)
+{
+    SDL_Renderer *renderer = App::get_renderer();
+    roundedBoxRGBA(renderer, x1, y1, x2, y2, rad, r, g, b, a);
+}
+
 void Draw::get_scale(float *x, float *y)
 {
     SDL_Renderer *renderer = App::get_renderer();
