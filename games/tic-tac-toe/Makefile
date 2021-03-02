@@ -15,6 +15,7 @@ all: libbuhao
 	$(MAKE) $(TARGET)
 
 $(TARGET): $(OBJS) ../../BuhaoEngine/$(BUILD_DIR)/libbuhao.a
+	mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
 libbuhao:

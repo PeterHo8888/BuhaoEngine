@@ -10,5 +10,5 @@ int main(int, char **)
 
     app.change_room("Main Menu");
 
-    app.main();
+    app.run();
 }

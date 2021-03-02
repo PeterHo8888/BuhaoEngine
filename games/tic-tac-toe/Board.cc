@@ -7,6 +7,7 @@
 #include <SDL2/SDL.h>
 
 #include <iostream>
+#include <cstring>
 using namespace std;
 
 static Sprite *sprite_o;
