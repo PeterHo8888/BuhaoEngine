@@ -182,7 +182,7 @@ void Board::process_input(SDL_Event *e)
 {
     switch (e->type) {
     case SDL_FINGERUP:
-        add_player(e->tfinger.x * 600, e->tfinger.y * 600);
+        add_player(e->tfinger.x * 1280, e->tfinger.y * 720);
         break;
     case SDL_MOUSEBUTTONUP:
         if (e->button.button == SDL_BUTTON_LEFT)
