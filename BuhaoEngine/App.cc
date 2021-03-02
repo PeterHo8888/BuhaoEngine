@@ -8,6 +8,11 @@
 #endif
 #include <SDL2/SDL.h>
 
+#include <string>
+#include <unordered_map>
+
+using namespace std;
+
 #ifdef __SWITCH__
 #define yeet (void*)
 #else
@@ -17,7 +22,7 @@
 SDL_Renderer *App::renderer = nullptr;
 SDL_Window *App::window = nullptr;
 
-App::App(const char title[], int width, int height) : MS_PER_UPDATE(16), running(false), room(nullptr)
+App::App(const char title[], int width, int height) : MS_PER_UPDATE(16), running(false), current_room(nullptr)
 {
 #ifdef __SWITCH__
     romfsInit();
@@ -46,17 +51,24 @@ App::App(const char title[], int width, int height) : MS_PER_UPDATE(16), running
         exit(1);
     }
     running = true;
+
+    add_room("BuhaoEngine Default Room", new Room(this));
+    change_room("BuhaoEngine Default Room");
 }
 
-void App::set_default_room(Room *room)
+void App::add_room(std::string room_name, Room *room)
 {
-    if (!renderer)
-        yeet "Renderer is not set";
-    if (!room)
-        yeet "Room is null";
+    room_map[room_name] = room;
+}
 
-    room->init();
-    this->room = room;
+void App::change_room(std::string room_name)
+{
+    auto room = room_map.find(room_name);
+    if (room == room_map.end())
+        yeet "Room not found";
+
+    current_room = room->second;
+    current_room->init();
 }
 
 void App::main()
@@ -96,7 +108,7 @@ void App::process_input()
             exit(0);
             break;
         default:
-            room->process_input(&event);
+            current_room->process_input(&event);
         }
     }
 }
@@ -112,17 +124,18 @@ void App::update()
      * Do NOT call if not overriden, or else
      * Room::update() will be called twice.
      */
-    if ((void *)(room->*(&Room::update)) != (void *)&Room::update)
-        room->update();
+    if ((void *)(current_room->*(&Room::update)) != (void *)&Room::update)
+        current_room->update();
 
     // Call base update()
-    room->Room::update();
+    current_room->Room::update();
 }
 
 void App::render(double lag_multiplier)
 {
-    SDL_SetRenderDrawColor(renderer, 150, 150, 150, 255);
+    //SDL_SetRenderDrawColor(renderer, 150, 150, 150, 255);
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderClear(renderer);
-    room->render();
+    current_room->render();
     SDL_RenderPresent(renderer);
 }

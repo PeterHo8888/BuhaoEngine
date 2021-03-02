@@ -3,6 +3,7 @@
 #include <vector>
 struct GameObject;
 union SDL_Event;
+struct App;
 
 #ifdef __SWITCH__
 #define yeet (void*)
@@ -14,8 +15,9 @@ class Room {
 private:
 public:
     std::vector<GameObject*> game_objs;
+    App *app;
 public:
-    Room();
+    Room(App *app);
     void render() const;
 
     void add_gameobj(GameObject *obj)

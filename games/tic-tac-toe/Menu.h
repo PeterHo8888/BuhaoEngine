@@ -4,11 +4,11 @@
 
 union SDL_Event;
 
-class Board : public Room {
+class Menu : public Room {
 private:
     void add_player(int x, int y);
 public:
-    Board(App *app) : Room(app) {}
+    Menu(App *app) : Room(app) {}
     void update() override;
     void process_input(SDL_Event *) override;
     void init() override;

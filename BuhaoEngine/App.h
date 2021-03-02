@@ -1,5 +1,8 @@
 #pragma once
 
+#include <string>
+#include <unordered_map>
+
 struct SDL_Renderer;
 struct SDL_Window;
 struct Room;
@@ -10,7 +13,8 @@ private:
     bool running;
     static SDL_Renderer *renderer;
     static SDL_Window *window;
-    Room *room;
+    Room *current_room;
+    std::unordered_map<std::string, Room *> room_map;
 private:
     void process_input();
     void update();
@@ -18,6 +22,7 @@ private:
 public:
     App(const char title[], int width, int height);
     void main();
-    void set_default_room(Room *);
+    void add_room(std::string, Room *);
+    void change_room(std::string);
     static SDL_Renderer *get_renderer() { return renderer; }
 };

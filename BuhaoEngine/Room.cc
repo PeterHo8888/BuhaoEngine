@@ -3,9 +3,8 @@
 
 using namespace std;
 
-Room::Room()
-{
-}
+Room::Room(App *app) : app(app)
+{}
 
 void Room::init()
 {
