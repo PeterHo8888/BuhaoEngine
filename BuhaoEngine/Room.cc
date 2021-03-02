@@ -28,7 +28,7 @@ void Room::update()
          * Do NOT call if not overriden, or else
          * GameObject::update() will be called twice.
          */
-        if ((void *)(game_obj->*(&GameObject::update)) != (void *)&GameObject::update)
+        //if ((void *)(game_obj->*(&GameObject::update)) != (void *)&GameObject::update)
             game_obj->update();
 
         // Call base update() for things like velocity and gravity

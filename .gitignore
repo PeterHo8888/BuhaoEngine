@@ -4,7 +4,8 @@
 **/*.nro
 **/*.nacp
 .vscode
-build
-build-switch
+build-*
 apps
 apps-switch
+SDL
+#include

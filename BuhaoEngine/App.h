@@ -2,10 +2,9 @@
 
 #include <string>
 #include <unordered_map>
+#include <SDL2/SDL.h> // needed for SDL_main macro
 
-struct SDL_Renderer;
-struct SDL_Window;
-struct Room;
+class Room;
 
 class App {
 private:
@@ -21,7 +20,7 @@ private:
     void render(double);
 public:
     App(const char title[], int width, int height);
-    void main();
+    void run();
     void add_room(std::string, Room *);
     void change_room(std::string);
     static SDL_Renderer *get_renderer() { return renderer; }

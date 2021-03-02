@@ -1,14 +1,14 @@
 #pragma once
 
 #include <vector>
-struct GameObject;
 union SDL_Event;
-struct App;
+class GameObject;
+class App;
 
-#ifdef __SWITCH__
-#define yeet (void*)
-#else
+#ifdef __LINUX__
 #define yeet throw
+#else
+#define yeet (void *)
 #endif
 
 class Room {

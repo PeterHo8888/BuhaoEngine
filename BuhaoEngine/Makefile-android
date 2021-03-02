@@ -1,0 +1,29 @@
+NDK_BIN = /opt/Android/Ndk/standalone-16/bin
+CXX = $(NDK_BIN)/armv7a-linux-androideabi16-clang++
+
+CXXFLAGS = -fPIC -Wall -Wextra -fpermissive -std=c++11 -I../
+LDFLAGS = -L../android/libs -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_gfx
+
+BUILD_DIR = build-android
+
+SRCS = $(wildcard *.cc) $(wildcard **/*.cc)
+OBJS = $(patsubst %.cc,$(BUILD_DIR)/%.o,$(SRCS))
+
+#AR = $(NDK_BIN)/llvm-ar
+AR = $(NDK_BIN)/arm-linux-androideabi-ar
+
+$(BUILD_DIR)/libbuhao.so: $(OBJS)
+	$(CXX) -shared -Wl,-soname,libbuhao.so -o $@ $^ $(LDFLAGS)
+	cp $@ ../android/libs
+
+$(BUILD_DIR)/%.o: %.cc %.h
+	@mkdir -p $(shell dirname $@)
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+$(BUILD_DIR)/%.o: %.cc
+	@mkdir -p $(shell dirname $@)
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+.PHONY: clean
+clean:
+	rm -rf $(BUILD_DIR)

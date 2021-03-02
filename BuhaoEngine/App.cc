@@ -13,10 +13,10 @@
 
 using namespace std;
 
-#ifdef __SWITCH__
-#define yeet (void*)
-#else
+#ifdef __LINUX__
 #define yeet throw
+#else
+#define yeet (void *)
 #endif
 
 SDL_Renderer *App::renderer = nullptr;
@@ -71,7 +71,7 @@ void App::change_room(std::string room_name)
     current_room->init();
 }
 
-void App::main()
+void App::run()
 {
     double prev = SDL_GetTicks();
     double lag = 0.0;
@@ -124,7 +124,7 @@ void App::update()
      * Do NOT call if not overriden, or else
      * Room::update() will be called twice.
      */
-    if ((void *)(current_room->*(&Room::update)) != (void *)&Room::update)
+    //if ((void *)(current_room->*(&Room::update)) != (void *)&Room::update)
         current_room->update();
 
     // Call base update()
