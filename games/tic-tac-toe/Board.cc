@@ -1,5 +1,6 @@
 #include "Board.h"
 #include "Player.h"
+#include "Button.h"
 #include <BuhaoEngine/Sprite.h>
 #include <BuhaoEngine/Sound.h>
 #include <BuhaoEngine/Shapes/Line.h>
@@ -25,6 +26,8 @@ static pair<char, char> results;
 static bool is_draw;
 
 static Line *win_lines[8];
+
+static Button *btn_exit;
 
 inline static bool check_draw()
 {
@@ -80,18 +83,26 @@ void Board::init()
     sound_lose = new Sound("tic-tac-toe/audio/C_Reverse_Trim.wav");
     sound_draw = new Sound("tic-tac-toe/audio/C_Tritone_trimmed.wav");
 
+    const int pad = 60;
+    const int diag_adj = 50;
     for (int y = 0; y < 3; ++y)
-        win_lines[y] = new Line(100, y * 200 + 100, 500, y * 200 + 100, 5);
+        win_lines[y] = new Line(440 - pad, 160 + y * 200, 840 + pad, 160 + y * 200, 5);
     for (int x = 0; x < 3; ++x)
-        win_lines[x + 3] = new Line(x * 200 + 100, 100, x * 200 + 100, 500, 5);
-    win_lines[6] = new Line(100, 100, 500, 500, 5);
-    win_lines[7] = new Line(500, 100, 100, 500, 5);
+        win_lines[x + 3] = new Line(440 + x * 200, 160 - pad, 440 + x * 200, 560 + pad, 5);
+    win_lines[6] = new Line(440 - pad + diag_adj, 160 - pad + diag_adj, 840 + pad - diag_adj, 560 + pad - diag_adj, 5);
+    win_lines[7] = new Line(840 + pad - diag_adj, 160 - pad + diag_adj, 440 - pad + diag_adj, 560 + pad - diag_adj, 5);
     for (int i = 0; i < 8; ++i)
         win_lines[i]->set_color(100, 200, 0);
 
     game_over = false;
     is_draw = false;
     results = pair<char, char>(0, 0);
+
+    int btn_width = 100;
+    int btn_height = 25;
+    btn_exit = new Button(640 - btn_width, 360 - btn_height, 640 + btn_width, 360 + btn_height, btn_height);
+    btn_exit->set_color(98, 203, 158, 255);
+    game_objs.push_back(btn_exit);
 }
 
 void Board::add_player(int x, int y)
@@ -106,19 +117,28 @@ void Board::add_player(int x, int y)
         return;
     }
 
+    int sprite_width = sprite_o->get_width();
+    int sprite_height = sprite_o->get_height();
+
+    if (x < 640 - 1.5 * sprite_width || x >= 640 + 1.5 * sprite_width) {
+        cout << "X out of bounds" << endl;
+        return;
+    }
+    if (y < 360 - 1.5 * sprite_height || y >= 360 + 1.5 * sprite_height) {
+        cout << "Y out of bounds" << endl;
+        return;
+    }
+
     Player *p;
     if (turn == 0)
         p = new Player(sprite_x);
     else
         p = new Player(sprite_o);
 
-    int sprite_width = sprite_o->get_width();
-    int sprite_height = sprite_o->get_height();
-
-    int cell_x = x / sprite_width;
-    int cell_y = y / sprite_height;
-    int draw_x = cell_x * sprite_width;
-    int draw_y = cell_y * sprite_height;
+    int cell_x = (x - 640 + 1.5 * sprite_width) / sprite_width;
+    int cell_y = (y - 360 + 1.5 * sprite_height) / sprite_height;
+    int draw_x = cell_x * sprite_width + 640 - 1.5 * sprite_width;
+    int draw_y = cell_y * sprite_height + 360 - 1.5 * sprite_height;
 
     if (board[cell_y * 3 + cell_x] == 0) {
         p->set_pos(draw_x, draw_y);
